@@ -7,6 +7,7 @@ RUN apt-get -q -y update \
     && apt-get -q -y install \
         build-essential \
         python-dev \
+        python \
         libpq-dev \
         python-pip \
         libpq-dev \
@@ -14,12 +15,48 @@ RUN apt-get -q -y update \
         python-virtualenv \
         git-core \
         solr-tomcat \
-        openjdk-8-jdk \
         redis-server \
         apache2 \
         libapache2-mod-wsgi \
         vim \
+        python-dev \
+        python-pip \
+        python-virtualenv \
+        python-wheel \
+        libpq-dev \
+        libxml2-dev \
+        libxslt-dev \
+        libgeos-dev \
+        libssl-dev \
+        libffi-dev \
+        postgresql-client \
+        build-essential \
+        git-core \        
+        curl \        
+        python3 \        
+        rsync \        
         wget 
 
 
+RUN  mkdir -p /usr/lib/ckan/default
+RUN virtualenv --no-site-packages /usr/lib/ckan/default
+RUN . /usr/lib/ckan/default/bin/activate
+RUN pip install setuptools==20.4
+RUN pip install -e 'git+https://github.com/ckan/ckan.git@ckan-2.7.0#egg=ckan'
+RUN pip install -r /usr/lib/ckan/default/src/ckan/requirements.txt
+RUN deactivate
+RUN . /usr/lib/ckan/default/bin/activate
+RUN sudo mkdir -p /etc/ckan/default
+RUN sudo chown -R `whoami` /etc/ckan/
+RUN paster make-config ckan /etc/ckan/default/development.ini
 
+ADD ./data/server.xml /var/lib/tomcat8/conf/server.xml
+
+
+
+EXPOSE 8080:8443
+EXPOSE 8081:8983
+
+
+
+RUN tomcat
