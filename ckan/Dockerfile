@@ -40,7 +40,7 @@ RUN apt-get -q -y update \
 
 RUN  mkdir -p /usr/lib/ckan/default
 RUN virtualenv --no-site-packages /usr/lib/ckan/default
-RUN . /usr/lib/ckan/default/bin/activate && pip install setuptools==20.4 && pip install -e 'git+https://github.com/ckan/ckan.git@ckan-2.7.0#egg=ckan' && pip install -r /usr/lib/ckan/default/src/ckan/requirements.txt && deactivate
+RUN . /usr/lib/ckan/default/bin/activate && pip install setuptools==20.4 && pip install -e 'git+https://github.com/ckan/ckan.git@ckan-2.7.2#egg=ckan' && pip install -r /usr/lib/ckan/default/src/ckan/requirements.txt && deactivate
 RUN . /usr/lib/ckan/default/bin/activate && mkdir -p /etc/ckan/default 
 
 RUN paster make-config ckan /etc/ckan/default/development.ini
