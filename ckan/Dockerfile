@@ -16,7 +16,7 @@ RUN apt-get -q -y update \
         solr-tomcat \
         openjdk-8-jdk \
         redis-server \
-        libapache2 \
+        apache2 \
         libapache2-mod-wsgi \
         vim \
         wget 
