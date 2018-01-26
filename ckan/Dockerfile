@@ -14,6 +14,7 @@ RUN apt-get -q -y update \
         virtualenv \
         python-virtualenv \
         git-core \
+        python-pastescript \
         solr-tomcat \
         redis-server \
         apache2 \
