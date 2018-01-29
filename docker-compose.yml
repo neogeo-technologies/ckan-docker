@@ -1,0 +1,26 @@
+version: '2'
+services:
+    ckan:
+        build: ./ckan
+        command: "/usr/sbin/apache2ctl -D FOREGROUND" 
+        ports:
+            - "8888:80"
+        volumes:
+            - ./ckan/data/ckan_storage:/ckan_storage
+    db:
+      image: postgres:9.6
+      environment: 
+        - POSTGRES_PASSWORD=pass
+        - POSTGRES_USER=ckan_default
+      volumes:
+          - ckandb:/var/lib/postgres/
+    redis:
+      image: redis
+
+    solr:
+      build: solr/
+      ports:
+       - "8983:8983"
+
+volumes: 
+  ckandb:
