@@ -1,9 +1,11 @@
 FROM debian:stretch
 MAINTAINER seb&alce
 
+ENV DEBIAN_FRONTEND=noninteractive 
+
 #Installation des paquets 
 RUN apt-get -q -y update \
-    && DEBIAN_FRONTEND=noninteractive apt-get -q -y upgrade \
+    && apt-get -q -y upgrade \
     && apt-get -q -y install \
         build-essential \
         python-dev \
@@ -15,8 +17,6 @@ RUN apt-get -q -y update \
         python-virtualenv \
         git-core \
         python-pastescript \
-        solr-tomcat \
-        redis-server \
         apache2 \
         libapache2-mod-wsgi \
         vim \
@@ -61,17 +61,43 @@ RUN . /usr/lib/ckan/default/bin/activate && mkdir -p /etc/ckan/default &&  /usr/
 
 ADD ./files/ckan.conf /etc/apache2/sites-enabled/000-default.conf
 ADD ./files/ckan.wsgi /etc/ckan/default/ckan.wsgi
-ADD ./files/production.ini /etc/ckan/default/production.ini
 
 
 RUN ln -s /ckan/who.ini /etc/ckan/default/who.ini
 
-ADD ./files/bootstrap.sh /bin/bootstrap.sh
+# Install DATAPUSHER
 
-#RUN chown -R www-data:www-data /usr/lib/ckan/default/
+RUN apt update && apt install  -y libxslt1-dev libxml2-dev libffi-dev
+RUN virtualenv /usr/lib/ckan/datapusher
+#create a source directory and switch to it
+RUN mkdir /usr/lib/ckan/datapusher/src
+WORKDIR /usr/lib/ckan/datapusher/src 
+RUN git clone -b 0.0.12 https://github.com/ckan/datapusher.git
+#install the DataPusher and its requirements
+WORKDIR /usr/lib/ckan/datapusher/src/datapusher
+RUN /usr/lib/ckan/datapusher/bin/pip install -r requirements.txt
+RUN /usr/lib/ckan/datapusher/bin/python setup.py develop
+
+COPY files/datapusher.conf /etc/apache2/sites-available/datapusher.conf
+COPY files/datapusher.wsgi /etc/ckan/
+COPY files/datapusher_settings.py /etc/ckan/
+COPY files/ports.conf /etc/apache2/
+
+RUN a2ensite datapusher
+
+# SPATIAL EXTENSION 
+#
+#RUN apt update && apt install -y libxslt1-dev libgeos-c1v5 libgeos-dev
+#RUN /usr/lib/ckan/default/bin/pip install -e "git+https://github.com/okfn/ckanext-spatial.git#egg=ckanext-spatial"
+#RUN /usr/lib/ckan/default/bin/pip install -r /usr/lib/ckan/default/src/ckanext-spatial/pip-requirements.txt
+
+# Keep at the end, since it changes frequently
+ADD ./files/production.ini /etc/ckan/default/production.ini
+ADD ./files/bootstrap.sh /bin/bootstrap.sh
 
 EXPOSE 8080:8443
 EXPOSE 8081:8983
+EXPOSE 8800:8800
 
 
 

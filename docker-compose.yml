@@ -4,9 +4,11 @@ services:
         build: ./ckan
         command: "/usr/sbin/apache2ctl -D FOREGROUND" 
         ports:
-            - "8888:80"
+          - "8888:80"
+          - "8800:8800"
         volumes:
             - ./ckan/data/ckan_storage:/ckan_storage
+            - ./ckan/ckan:/ckan
     db:
       image: postgres:9.6
       environment: 
@@ -14,6 +16,14 @@ services:
         - POSTGRES_USER=ckan_default
       volumes:
           - ckandb:/var/lib/postgres/
+
+    db_datastore:
+      image: postgres:9.6
+      environment: 
+        - POSTGRES_PASSWORD=pass
+        - POSTGRES_USER=datastore_default
+      volumes:
+          - ckandb_datastore:/var/lib/postgres/
     redis:
       image: redis
 
@@ -24,3 +34,4 @@ services:
 
 volumes: 
   ckandb:
+  ckandb_datastore:
