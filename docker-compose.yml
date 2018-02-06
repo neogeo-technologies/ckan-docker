@@ -10,20 +10,20 @@ services:
             - ./ckan/data/ckan_storage:/ckan_storage
             - ./ckan/ckan:/ckan
     db:
-      image: postgres:9.6
+      image: mdillon/postgis:9.6
       environment: 
         - POSTGRES_PASSWORD=pass
         - POSTGRES_USER=ckan_default
       volumes:
-          - ckandb:/var/lib/postgres/
+          - db:/var/lib/postgresql/data
 
     db_datastore:
-      image: postgres:9.6
+      image: mdillon/postgis:9.6
       environment: 
         - POSTGRES_PASSWORD=pass
         - POSTGRES_USER=datastore_default
       volumes:
-          - ckandb_datastore:/var/lib/postgres/
+          - db_datastore:/var/lib/postgresql/data
     redis:
       image: redis
 
@@ -33,5 +33,5 @@ services:
        - "8983:8983"
 
 volumes: 
-  ckandb:
-  ckandb_datastore:
+  db:
+  db_datastore:

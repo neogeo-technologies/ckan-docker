@@ -86,10 +86,10 @@ COPY files/ports.conf /etc/apache2/
 RUN a2ensite datapusher
 
 # SPATIAL EXTENSION 
-#
-#RUN apt update && apt install -y libxslt1-dev libgeos-c1v5 libgeos-dev
-#RUN /usr/lib/ckan/default/bin/pip install -e "git+https://github.com/okfn/ckanext-spatial.git#egg=ckanext-spatial"
-#RUN /usr/lib/ckan/default/bin/pip install -r /usr/lib/ckan/default/src/ckanext-spatial/pip-requirements.txt
+
+RUN apt update && apt install -y libxslt1-dev libgeos-c1v5 libgeos-dev
+RUN /usr/lib/ckan/default/bin/pip install -e "git+https://github.com/okfn/ckanext-spatial.git#egg=ckanext-spatial"
+RUN /usr/lib/ckan/default/bin/pip install -r /usr/lib/ckan/default/src/ckanext-spatial/pip-requirements.txt
 
 # Keep at the end, since it changes frequently
 ADD ./files/production.ini /etc/ckan/default/production.ini
