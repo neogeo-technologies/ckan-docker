@@ -93,12 +93,17 @@ RUN apt update && apt install -y libxslt1-dev libgeos-c1v5 libgeos-dev
 RUN /usr/lib/ckan/default/bin/pip install -e "git+https://github.com/okfn/ckanext-spatial.git#egg=ckanext-spatial"
 RUN /usr/lib/ckan/default/bin/pip install -r /usr/lib/ckan/default/src/ckanext-spatial/pip-requirements.txt
 
-#  * GEOVIEW
+# * GEOVIEW
 
-RUN pip install ckanext-geoview
+RUN /usr/lib/ckan/default/bin/pip install ckanext-geoview
+
+# * SCHEMING
+
 
 
 # Keep at the end, since it changes frequently
+RUN mkdir /ckan_storage
+RUN chown -R www-data /ckan_storage
 ADD ./files/production.ini /etc/ckan/default/production.ini
 ADD ./files/bootstrap.sh /bin/bootstrap.sh
 
