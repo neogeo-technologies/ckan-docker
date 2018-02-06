@@ -17,13 +17,6 @@ services:
       volumes:
           - db:/var/lib/postgresql/data
 
-    db_datastore:
-      image: mdillon/postgis:9.6
-      environment: 
-        - POSTGRES_PASSWORD=pass
-        - POSTGRES_USER=datastore_default
-      volumes:
-          - db_datastore:/var/lib/postgresql/data
     redis:
       image: redis
 
@@ -34,4 +27,3 @@ services:
 
 volumes: 
   db:
-  db_datastore:

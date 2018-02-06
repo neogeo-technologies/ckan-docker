@@ -118,6 +118,10 @@ RUN /usr/lib/ckan/default/bin/pip install ckanext-composite
 
 RUN /usr/lib/ckan/default/bin/pip install -e git+https://github.com/neogeo-technologies/ckanext-restricted.git@develop#egg=ckanext-restricted-develop
 
+# * PDF-VIEW
+
+RUN /usr/lib/ckan/default/bin/pip install ckanext-pdfview
+
 # Keep at the end, since it changes frequently
 RUN mkdir /ckan_storage
 RUN chown -R www-data /ckan_storage

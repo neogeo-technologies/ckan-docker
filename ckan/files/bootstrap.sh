@@ -4,12 +4,18 @@
 
 cd /ckan
 
+# Création de la base pour data_store
+echo "CREATE USER datastore_default WITH PASSWORD 'pass'" | PGPASSWORD=pass psql -U ckan_default -h db
+echo "CREATE DATABASE datastore_default" | PGPASSWORD=pass psql -U ckan_default -h db
+echo "GRANT ALL ON DATABASE datastore_default TO ckan_default" | PGPASSWORD=pass psql -U ckan_default -h db
+
 # Création de la base par défaut
 paster db init -c /etc/ckan/default/production.ini
 
-# Création de la base pour data_store
-echo "CREATE USER ckan_default" | PGPASSWORD=pass psql -h db_datastore -U datastore_default
-paster --plugin=ckan datastore set-permissions -c /etc/ckan/default/production.ini | PGPASSWORD=pass psql -h db_datastore -U datastore_default
+#echo "REVOKE CONNECT ON DATABASE ckan_default FROM datastore_default;" | PGPASSWORD=pass psql -h db -U datastore_default
+
+# reglage des droits pour datastore
+paster --plugin=ckan datastore set-permissions -c /etc/ckan/default/production.ini | PGPASSWORD=pass psql -h db -U ckan_default 
 
 # Création de la base pour ckanext-spatial
 paster --plugin=ckanext-spatial spatial initdb 4326 --config=/etc/ckan/default/production.ini
