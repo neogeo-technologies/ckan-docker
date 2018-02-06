@@ -65,7 +65,9 @@ ADD ./files/ckan.wsgi /etc/ckan/default/ckan.wsgi
 
 RUN ln -s /ckan/who.ini /etc/ckan/default/who.ini
 
-# Install DATAPUSHER
+# Install extenstions: 
+
+# * DATAPUSHER
 
 RUN apt update && apt install  -y libxslt1-dev libxml2-dev libffi-dev
 RUN virtualenv /usr/lib/ckan/datapusher
@@ -85,11 +87,16 @@ COPY files/ports.conf /etc/apache2/
 
 RUN a2ensite datapusher
 
-# SPATIAL EXTENSION 
+# * SPATIAL
 
 RUN apt update && apt install -y libxslt1-dev libgeos-c1v5 libgeos-dev
 RUN /usr/lib/ckan/default/bin/pip install -e "git+https://github.com/okfn/ckanext-spatial.git#egg=ckanext-spatial"
 RUN /usr/lib/ckan/default/bin/pip install -r /usr/lib/ckan/default/src/ckanext-spatial/pip-requirements.txt
+
+#  * GEOVIEW
+
+RUN pip install ckanext-geoview
+
 
 # Keep at the end, since it changes frequently
 ADD ./files/production.ini /etc/ckan/default/production.ini
