@@ -97,8 +97,22 @@ RUN /usr/lib/ckan/default/bin/pip install -r /usr/lib/ckan/default/src/ckanext-s
 
 RUN /usr/lib/ckan/default/bin/pip install ckanext-geoview
 
+
+# * CKANTOOLKIT
+WORKDIR /usr/lib/ckan/default/src
+RUN git clone https://github.com/ckan/ckantoolkit.git
+WORKDIR /usr/lib/ckan/default/src/ckantoolkit
+RUN python setup.py develop
+
 # * SCHEMING
 
+RUN /usr/lib/ckan/default/bin/pip install ckanext-scheming==1.0.0
+ADD ./files/ckan_dataset.json /usr/lib/ckan/default/lib/python2.7/site-packages/ckanext/scheming
+ADD ./files/presets.json /usr/lib/ckan/default/lib/python2.7/site-packages/ckanext/scheming
+
+# * COMPOSITE
+
+RUN /usr/lib/ckan/default/bin/pip install ckanext-composite
 
 
 # Keep at the end, since it changes frequently
