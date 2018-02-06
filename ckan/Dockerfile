@@ -114,6 +114,9 @@ ADD ./files/presets.json /usr/lib/ckan/default/lib/python2.7/site-packages/ckane
 
 RUN /usr/lib/ckan/default/bin/pip install ckanext-composite
 
+# * RESTRICTED
+
+RUN /usr/lib/ckan/default/bin/pip install -e git+https://github.com/neogeo-technologies/ckanext-restricted.git@develop#egg=ckanext-restricted-develop
 
 # Keep at the end, since it changes frequently
 RUN mkdir /ckan_storage
