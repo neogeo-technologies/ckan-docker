@@ -122,6 +122,11 @@ RUN /usr/lib/ckan/default/bin/pip install -e git+https://github.com/neogeo-techn
 
 RUN /usr/lib/ckan/default/bin/pip install ckanext-pdfview
 
+
+# * Ckanext-IDGOtheme
+RUN /usr/lib/ckan/default/bin/pip install ckanext-idgotheme
+
+
 # Keep at the end, since it changes frequently
 RUN mkdir /ckan_storage
 RUN chown -R www-data /ckan_storage
