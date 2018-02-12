@@ -47,8 +47,8 @@ RUN . /usr/lib/ckan/default/bin/activate && pip install setuptools==36.1
 
 # Clone ckan repo
 WORKDIR /ckan/
-RUN chmod -Rv 777 /ckan/ & git clone https://github.com/ckan/ckan.git  .
-RUN cd /ckan/ && git checkout ckan-2.7.2
+RUN chmod -Rv 777 /ckan/ & git clone https://github.com/neogeo-technologies/ckan.git .
+RUN cd /ckan/ && git checkout idgo
 RUN chown -R www-data:www-data /ckan
 # Dev option : put your copy of ithe ckan repo in ckan/ckan AND comment the 3 previous lines
 # ADD --chown=www-data:www-data ./ckan /ckan
