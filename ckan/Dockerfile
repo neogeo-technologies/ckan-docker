@@ -42,12 +42,12 @@ RUN apt-get -q -y update \
         wget 
 
 
-
 RUN  mkdir -p /usr/lib/ckan/default && mkdir -p /etc/ckan/default &&  virtualenv --no-site-packages /usr/lib/ckan/default 
 RUN . /usr/lib/ckan/default/bin/activate && pip install setuptools==36.1
 
 # Clone ckan repo
-RUN git clone https://github.com/ckan/ckan.git 
+WORKDIR /ckan/
+RUN chmod -Rv 777 /ckan/ & git clone https://github.com/ckan/ckan.git  .
 RUN cd /ckan/ && git checkout ckan-2.7.2
 RUN chown -R www-data:www-data /ckan
 # Dev option : put your copy of ithe ckan repo in ckan/ckan AND comment the 3 previous lines
@@ -102,7 +102,7 @@ RUN /usr/lib/ckan/default/bin/pip install ckanext-geoview
 WORKDIR /usr/lib/ckan/default/src
 RUN git clone https://github.com/ckan/ckantoolkit.git
 WORKDIR /usr/lib/ckan/default/src/ckantoolkit
-RUN python setup.py develop
+RUN . /usr/lib/ckan/default/bin/activate &&  python setup.py develop
 
 # * SCHEMING
 
