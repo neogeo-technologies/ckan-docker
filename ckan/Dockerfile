@@ -124,7 +124,13 @@ RUN /usr/lib/ckan/default/bin/pip install ckanext-pdfview
 
 
 # * Ckanext-IDGOtheme
-RUN /usr/lib/ckan/default/bin/pip install ckanext-idgotheme
+RUN mkdir /usr/lib/ckan/idgotheme
+WORKDIR /usr/lib/ckan/idgotheme
+RUN git clone https://github.com/neogeo-technologies/ckanext-idgotheme.git .
+RUN  /usr/lib/ckan/default/bin/python setup.py develop 
+RUN  /usr/lib/ckan/default/bin/pip install -r dev-requirements.txt
+
+
 
 
 # Keep at the end, since it changes frequently
