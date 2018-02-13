@@ -6,9 +6,9 @@ services:
         ports:
           - "8888:80"
           - "8800:8800"
-            #        volumes:
-            #            - ./ckan/data/ckan_storage:/ckan_storage
-            #            - ./ckan/ckan:/ckan
+        volumes:
+          - ./ckan/data/ckan_storage:/ckan_storage
+            #- ./ckan/ckan:/ckan
     db:
       image: mdillon/postgis:9.6
       environment: 
