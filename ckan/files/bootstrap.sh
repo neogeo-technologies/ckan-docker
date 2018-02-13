@@ -1,5 +1,7 @@
 #!/bin/bash 
 
+chown -R www-data /ckan_storage
+
 . /usr/lib/ckan/default/bin/activate
 
 cd /ckan
