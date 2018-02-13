@@ -122,6 +122,13 @@ RUN /usr/lib/ckan/default/bin/pip install -e git+https://github.com/neogeo-techn
 
 RUN /usr/lib/ckan/default/bin/pip install ckanext-pdfview
 
+# * CAS
+RUN mkdir /usr/lib/ckan/cas/
+WORKDIR /usr/lib/ckan/cas/
+RUN git clone https://github.com/neogeo-technologies/ckanext-cas.git .
+RUN git checkout -b idgo-0.1.1 
+RUN /usr/lib/ckan/default/bin/pip install -r requirements.txt
+
 
 # * Ckanext-IDGOtheme
 RUN mkdir /usr/lib/ckan/idgotheme
