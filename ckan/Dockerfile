@@ -42,13 +42,13 @@ RUN apt-get -q -y update \
         wget 
 
 
-
 RUN  mkdir -p /usr/lib/ckan/default && mkdir -p /etc/ckan/default &&  virtualenv --no-site-packages /usr/lib/ckan/default 
 RUN . /usr/lib/ckan/default/bin/activate && pip install setuptools==36.1
 
 # Clone ckan repo
-RUN git clone https://github.com/ckan/ckan.git 
-RUN cd /ckan/ && git checkout ckan-2.7.2
+WORKDIR /ckan/
+RUN chmod -Rv 777 /ckan/ & git clone https://github.com/neogeo-technologies/ckan.git .
+RUN cd /ckan/ && git checkout idgo
 RUN chown -R www-data:www-data /ckan
 # Dev option : put your copy of ithe ckan repo in ckan/ckan AND comment the 3 previous lines
 # ADD --chown=www-data:www-data ./ckan /ckan
@@ -102,7 +102,7 @@ RUN /usr/lib/ckan/default/bin/pip install ckanext-geoview
 WORKDIR /usr/lib/ckan/default/src
 RUN git clone https://github.com/ckan/ckantoolkit.git
 WORKDIR /usr/lib/ckan/default/src/ckantoolkit
-RUN python setup.py develop
+RUN . /usr/lib/ckan/default/bin/activate &&  python setup.py develop
 
 # * SCHEMING
 
@@ -121,6 +121,24 @@ RUN /usr/lib/ckan/default/bin/pip install -e git+https://github.com/neogeo-techn
 # * PDF-VIEW
 
 RUN /usr/lib/ckan/default/bin/pip install ckanext-pdfview
+
+# * CAS
+RUN mkdir /usr/lib/ckan/cas/
+WORKDIR /usr/lib/ckan/cas/
+RUN git clone https://github.com/neogeo-technologies/ckanext-cas.git .
+RUN git checkout -b idgo-0.1.1 
+RUN /usr/lib/ckan/default/bin/pip install -r requirements.txt
+
+
+# * Ckanext-IDGOtheme
+RUN mkdir /usr/lib/ckan/idgotheme
+WORKDIR /usr/lib/ckan/idgotheme
+RUN git clone https://github.com/neogeo-technologies/ckanext-idgotheme.git .
+RUN  /usr/lib/ckan/default/bin/python setup.py develop 
+RUN  /usr/lib/ckan/default/bin/pip install -r dev-requirements.txt
+
+
+
 
 # Keep at the end, since it changes frequently
 RUN mkdir /ckan_storage
