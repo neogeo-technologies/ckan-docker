@@ -21,3 +21,6 @@ paster --plugin=ckan datastore set-permissions -c /etc/ckan/default/production.i
 
 # Création de la base pour ckanext-spatial
 paster --plugin=ckanext-spatial spatial initdb 4326 --config=/etc/ckan/default/production.ini
+
+# Préparation de la base pour xloader
+PGPASSWORD=pass psql -U ckan_default -h db -d datastore_default -f /usr/lib/ckan/default/src/ckanext-xloader/full_text_function.sql

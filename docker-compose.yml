@@ -2,7 +2,7 @@ version: '2'
 services:
     ckan:
         build: ./ckan
-        command: "/usr/sbin/apache2ctl -D FOREGROUND" 
+        #command: "/usr/sbin/apache2ctl -D FOREGROUND" 
         ports:
           - "8888:80"
           - "8800:8800"

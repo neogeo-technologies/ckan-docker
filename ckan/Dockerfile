@@ -69,23 +69,23 @@ RUN ln -s /ckan/who.ini /etc/ckan/default/who.ini
 
 # * DATAPUSHER
 
-RUN apt update && apt install  -y libxslt1-dev libxml2-dev libffi-dev
-RUN virtualenv /usr/lib/ckan/datapusher
-#create a source directory and switch to it
-RUN mkdir /usr/lib/ckan/datapusher/src
-WORKDIR /usr/lib/ckan/datapusher/src 
-RUN git clone -b 0.0.12 https://github.com/ckan/datapusher.git
-#install the DataPusher and its requirements
-WORKDIR /usr/lib/ckan/datapusher/src/datapusher
-RUN /usr/lib/ckan/datapusher/bin/pip install -r requirements.txt
-RUN /usr/lib/ckan/datapusher/bin/python setup.py develop
-
-COPY files/datapusher.conf /etc/apache2/sites-available/datapusher.conf
-COPY files/datapusher.wsgi /etc/ckan/
-COPY files/datapusher_settings.py /etc/ckan/
-COPY files/ports.conf /etc/apache2/
-
-RUN a2ensite datapusher
+#RUN apt update && apt install  -y libxslt1-dev libxml2-dev libffi-dev
+#RUN virtualenv /usr/lib/ckan/datapusher
+##create a source directory and switch to it
+#RUN mkdir /usr/lib/ckan/datapusher/src
+#WORKDIR /usr/lib/ckan/datapusher/src 
+#RUN git clone -b 0.0.12 https://github.com/ckan/datapusher.git
+##install the DataPusher and its requirements
+#WORKDIR /usr/lib/ckan/datapusher/src/datapusher
+#RUN /usr/lib/ckan/datapusher/bin/pip install -r requirements.txt
+#RUN /usr/lib/ckan/datapusher/bin/python setup.py develop
+#
+#COPY files/datapusher.conf /etc/apache2/sites-available/datapusher.conf
+#COPY files/datapusher.wsgi /etc/ckan/
+#COPY files/datapusher_settings.py /etc/ckan/
+#COPY files/ports.conf /etc/apache2/
+#
+#RUN a2ensite datapusher
 
 # * SPATIAL
 
@@ -138,6 +138,11 @@ RUN  /usr/lib/ckan/default/bin/python setup.py develop
 RUN  /usr/lib/ckan/default/bin/pip install -r dev-requirements.txt
 
 
+# * CKANEXT-XLOADER
+RUN /usr/lib/ckan/default/bin/pip install -e git+https://github.com/davidread/ckanext-xloader.git#egg=ckanext-xloader
+WORKDIR /usr/lib/ckan/default/src/ckanext-xloader
+RUN /usr/lib/ckan/default/bin/pip install -r requirements.txt
+RUN /usr/lib/ckan/default/bin/pip install -U requests[security]
 
 
 # Keep at the end, since it changes frequently
@@ -145,7 +150,11 @@ RUN mkdir /ckan_storage
 RUN chown -R www-data /ckan_storage
 ADD ./files/production.ini /etc/ckan/default/production.ini
 ADD ./files/bootstrap.sh /bin/bootstrap.sh
+ADD ./files/init.sh /bin/init.sh
 
+CMD init.sh
+
+WORKDIR /ckan/
 EXPOSE 8080:8443
 EXPOSE 8081:8983
 EXPOSE 8800:8800
