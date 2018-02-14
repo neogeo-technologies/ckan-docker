@@ -14,7 +14,6 @@ RUN apt-get -q -y update \
         python-pip \
         libpq-dev \
         virtualenv \
-        python-virtualenv \
         git-core \
         python-pastescript \
         apache2 \
@@ -45,10 +44,10 @@ RUN apt-get -q -y update \
 
 
 
-RUN mkdir /idgo_venv
+RUN virtualenv --python=python3.5 /idgo_venv
 
 WORKDIR idgo_venv
-RUN  pyvenv-3.5 ./ & source bin/activate & pip install --upgrade pip & pip install --upgrade setuptools &  pip install psycopg2 & pip install django==1.11 pip install django-bootstrap3==9.0.0 & pip install django-mama-cas==2.3.0 & pip install django-taggit==0.22.1 & pip install Pillow==4.2.1 & pip install timeout-decorator==0.4.0 & pip install requests=2.18.4 & pip install ckanapi==4.0 & pip install OWSLib==0.14.0 & pip install django-queryset-csv==1.0.0
+RUN source bin/activate & pip install --upgrade pip setuptools &  pip install psycopg2 django==1.11 django-bootstrap3==9.0.0 django-mama-cas==2.3.0 django-taggit==0.22.1 Pillow==4.2.1 timeout-decorator==0.4.0 requests==2.18.4 ckanapi==4.0 OWSLib==0.14.0 django-queryset-csv==1.0.0
 
 
 
