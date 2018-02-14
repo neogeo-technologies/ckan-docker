@@ -9,6 +9,15 @@ services:
         volumes:
           - ./ckan/data/ckan_storage:/ckan_storage
             #- ./ckan/ckan:/ckan
+    admin:
+        build: ./admin
+        command: "/usr/sbin/apache2ctl -D FOREGROUND"
+        ports:
+          - "8181:80"
+            # volumes:
+            #- ./ckan/data/ckan_storage:/ckan_storage
+            #- ./ckan/ckan:/ckan
+
     db:
       image: mdillon/postgis:9.6
       environment: 
