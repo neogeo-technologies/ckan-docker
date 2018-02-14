@@ -1,5 +1,5 @@
 FROM debian:stretch
-MAINTAINER seb&alce
+MAINTAINER seb&&alce
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -47,7 +47,8 @@ RUN apt-get -q -y update \
 RUN virtualenv --python=python3.5 /idgo_venv
 
 WORKDIR idgo_venv
-RUN source bin/activate & pip install --upgrade pip setuptools &  pip install psycopg2 django==1.11 django-bootstrap3==9.0.0 django-mama-cas==2.3.0 django-taggit==0.22.1 Pillow==4.2.1 timeout-decorator==0.4.0 requests==2.18.4 ckanapi==4.0 OWSLib==0.14.0 django-queryset-csv==1.0.0
+#RUN pip install --upgrade pip setuptools &&  
+RUN /idgo_venv/bin/pip install psycopg2 django==1.11 django-bootstrap3==9.0.0 django-mama-cas==2.3.0 django-taggit==0.22.1 Pillow==4.2.1 timeout-decorator==0.4.0 requests==2.18.4 ckanapi==4.0 OWSLib==0.14.0 django-queryset-csv==1.0.0
 
 
 
@@ -59,21 +60,20 @@ RUN ln -s /apps/idgo/idgo_admin /idgo_venv/
 RUN ln -s /apps/mdedit /apps/idgo/idgo_admin/static/libs/
 
 WORKDIR /idgo_venv
-RUN source bin/activate &  django-admin startproject config .
+RUN /idgo_venv/bin/django-admin startproject config .
 
 ADD ./files/get_ckan_user_apikey.py /usr/local/bin/get_ckan_user_apikey.py
 
 WORKDIR /var/www/html
-RUN mkdir static & mkdir -p  media/logos
+RUN mkdir static && mkdir -p  media/logos
 
 ADD ./files/settings.py /idgo_venv/config/settings.py
 ADD ./files/urls.py /idgo_venv/config/urls.py
 
 WORKDIR /idgo_venv
-RUN source bin/activate & python manage.py migrate & python manage.py createsuperuser & python manage.py collectstatic
+# RUN /idgo_venv/bin/python manage.py migrate && /idgo_venv/bin/python manage.py collectstatic
 
 ADD ./files/idgo.conf /etc/apache2/sites-available/idgo.conf
-
+RUN rm -rf /etc/apache2/sites-enabled/000-default.conf
 RUN ln -s /etc/apache2/sites-available/idgo.conf /etc/apache2/sites-enabled/idgo.conf
-
 

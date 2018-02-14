@@ -38,3 +38,7 @@ Config Settings
 Document any optional config settings here. e.g. :
 - In ckan/files/production.ini you have the configuration for ckan, for the change to be applied it is necessary to rebuild your container
 
+#TODO
+
+Creatuuser 
+paster sysadmin add admin email=admin@localhost name=admin password=password -c /etc/ckan/default/production.ini

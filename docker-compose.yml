@@ -17,12 +17,14 @@ services:
             # volumes:
             #- ./ckan/data/ckan_storage:/ckan_storage
             #- ./ckan/ckan:/ckan
+            
+            
     db_admin:
         image: mdillon/postgis:9.6
-      environment:
-        - POSTGRES_PASSWORD=pass
-        - POSTGRES_USER=ckan_default
-      volumes:
+        environment:
+          - POSTGRES_PASSWORD=password
+          - POSTGRES_USER=idgo_admin
+        volumes:
           - db_admin:/var/lib/postgresql/data
 
 
