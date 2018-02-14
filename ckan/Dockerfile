@@ -95,7 +95,7 @@ RUN /usr/lib/ckan/default/bin/pip install -r /usr/lib/ckan/default/src/ckanext-s
 
 # * GEOVIEW
 
-RUN /usr/lib/ckan/default/bin/pip install ckanext-geoview
+RUN /usr/lib/ckan/default/bin/pip install -e git+https://github.com/neogeo-technologies/ckanext-geoview.git@idgo-0.0.12#egg=ckanext-geoview
 
 
 # * CKANTOOLKIT
