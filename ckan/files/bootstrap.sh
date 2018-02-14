@@ -21,3 +21,6 @@ paster --plugin=ckan datastore set-permissions -c /etc/ckan/default/production.i
 
 # Création de la base pour ckanext-spatial
 paster --plugin=ckanext-spatial spatial initdb 4326 --config=/etc/ckan/default/production.ini
+
+# create default user
+paster sysadmin add admin name=admin password=password email=admin@ckan -c /etc/ckan/default/production.ini
