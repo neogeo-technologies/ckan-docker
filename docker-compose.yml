@@ -9,6 +9,25 @@ services:
         volumes:
           - ./ckan/data/ckan_storage:/ckan_storage
             #- ./ckan/ckan:/ckan
+    admin:
+        build: ./admin
+        command: "/usr/sbin/apache2ctl -D FOREGROUND"
+        ports:
+          - "8181:80"
+            # volumes:
+            #- ./ckan/data/ckan_storage:/ckan_storage
+            #- ./ckan/ckan:/ckan
+            
+            
+    db_admin:
+        image: mdillon/postgis:9.6
+        environment:
+          - POSTGRES_PASSWORD=password
+          - POSTGRES_USER=idgo_admin
+        volumes:
+          - db_admin:/var/lib/postgresql/data
+
+
     db:
       image: mdillon/postgis:9.6
       environment: 
@@ -27,3 +46,4 @@ services:
 
 volumes: 
   db:
+  db_admin:
